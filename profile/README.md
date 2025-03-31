@@ -1,0 +1,1 @@
+# Strefa wolna od PHP 💩
