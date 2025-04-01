@@ -1,0 +1,113 @@
+Moduł wysyłania SMS oraz wiadomości e-mail.
+
+
+
+get("/about")   
+
+### Request:
+qba@borsuk:~$ curl 10.0.4.1:8000/about
+    
+    ### W odpowiedzi:
+    "API dziala"
+
+get("/smsapi/info") 
+
+### Request:
+qba@borsuk:~$ curl 10.0.4.1:8000/smsapi/info
+
+    ### W odpowiedzi:
+    {"count":2,"results":
+            [
+                {"sender":"2WAY",
+                "status":"ACTIVE",
+                "default":false},
+            {
+                "sender":"BOR Service",
+                "status":"ACTIVE",
+                "default":true}],
+        "_current":
+            {
+                "sender":"2WAY",
+                "status":"ACTIVE",
+                "default":false
+            },
+        "_index":1}
+
+
+get("/smsapi/balans") 
+
+    ### W odpowiedzi:
+    {"points":126.8,
+    "pro_count":"745",
+    "eco_count":"1408",
+    "mms_count":"422",
+    "vms_gsm_count":"1268",
+    "vms_land_count":"1268"}
+
+
+post("/smsapi/sendsms")
+
+### Request:
+qba@borsuk:~$ curl 10.0.4.1:8000/about
+
+post("/smsapi/sendmultisms") 
+
+### Request
+curl -X POST http://localhost:8000/smsapi/sendsms\
+     -H "Content-Type: application/json" \
+     -d '{"smsnumber": "534069999", "message": "wiadmosc testowa 2"}'
+
+    ### W odpoweidzi:
+    {"count":1,"results":
+        [
+            {"id":"67EC31183462631F78D5E1F4",
+            "points":0.17,
+            "number":"48534069999",
+            "date_sent":1743532312,
+            "submitted_number":"534069999",
+            "status":"QUEUE",
+            "idx":null,
+            "error":null,
+            "parts":1
+            }
+        ],
+        "_current":{
+            "id":"67EC31183462631F78D5E1F4",
+            "points":0.17,
+            "number":"48534069999",
+            "date_sent":1743532312,
+            "submitted_number":"534069999",
+            "status":"QUEUE",
+            "idx":null,
+            "error":null,
+            "parts":1
+            },
+        "_index":1,
+        "message":null,
+        "parts":null,
+        "length":null
+    }
+
+
+### Request:
+post('/mailer/send_email')
+
+    ### Request:
+    curl -X POST http://localhost:8000/mailer/send_email\
+     -H "Content-Type: application/json" \
+     -d '{
+           "recipients": ["kubaboraw@gmail.com", "j.borawski@borservice.pl"],
+           "subject": "Testowy email",
+           "body": "To jest testowa wiadomość wysłana z API."
+         }'
+
+    ### W odpowiedzi:
+    [
+        {"recipient":"kubaboraw@gmail.com",
+        "success":true,
+        "message":"Email sent successfully"},
+    {
+        "recipient":"j.borawski@borservice.pl",
+        "success":true,
+        "message":"Email sent successfully"}]
+    
